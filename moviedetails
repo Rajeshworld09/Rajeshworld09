@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+  <meta charset="utf-8">
+  <title>MOVIE AND THE RATINGS</title>
+   <script>
+function mOVIE(n, a, m) {
+  var movie = n;
+  var language = a;
+  var ratings = m;
+  this.printDetails = function() {
+    document.write('MOVIE: ' + movie + ' language: ' + language + ' ratings: ' + ratings);
+  }
+}
+
+var movie1 = new mOVIE('CHARLIE','TELUGU', 100%);
+movie1.printDetails();
+
+</script>
+  </head>
+  <body>
+</body>
+  </html>
