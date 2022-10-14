@@ -204,6 +204,19 @@ METHODS commonly used in fs module:
 	OUTPUT:
 		deleting an existing file
 		File deleted successfully!
+->Reading a file from users entry:
+	CODE:
+		var fs = require("fs");
+		const prompt=require('prompt-sync')();
+
+		// Synchronous read
+		a=prompt("Enter a file name:");
+
+		var data = fs.readFileSync(a);
+		console.log(data.toString());
+	OUTPUT:
+		Enter a file name:input.txt
+		Rey Rajesh.This is my name
 
 
 
