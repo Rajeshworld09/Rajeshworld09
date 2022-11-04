@@ -1,0 +1,22 @@
+var express = require('express')
+var app = express()
+app.get('/', function (req, res) {
+   res.send('Welcome LBRCE')
+})
+app.get('/cse', function (req, res) {
+   res.send('Its CSE page')
+})
+
+app.get('/It', function (req, res) {
+   res.send('Its IT page')
+})
+app.get('/Ece', function (req, res) {
+   res.send('Its Ece page')
+})
+
+app.get('/Mech', function (req, res) {
+   res.send('Its Mech page')
+})
+var server = app.listen(8000, function(){
+    console.log('Listening on port 8000...')
+})
