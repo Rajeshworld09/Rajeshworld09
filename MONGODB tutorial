@@ -1,0 +1,65 @@
+const express=require('express');
+const app=express();
+const mongoose=require('mongoose');
+mongoose.connect("mongodb://127.0.0.1:27017/CSE_C",(err)=>{
+if(err)
+console.log("DB not connected-error");
+else
+console.log("DB connected");
+});
+const ns=new mongoose.Schema({
+name:String,
+age:Number,
+Pno:Number
+});
+const nm=new mongoose.model("record",ns);
+const data=new nm({name:'SOHAIL',age:27,Pno:1234567890});
+data.save();
+nm.insertMany([
+              {name:'rey',age:19,Pno:8639385674},
+              {name:'philies',age:24,Pno:9010651924},
+              {name:'Nick',age:27,Pno:8897385394}
+             ]).then(function(){
+                   //console.log("Data Inserted")
+             }).catch(function(error){
+                    console.log("error")
+});
+
+var myquery={name:"rey"};
+var newvalues={$set:{Pno:9010651924}};
+nm.findOne({},function(err,res)
+{
+if(err)throw err;
+console.log("1 document find:",res);
+});
+
+
+const old={name:'rajesh'};
+const new1={age:27};
+let doc=nm.findOneandUpdate(old,new1,(err)=>{
+  if(err){
+    console.log(err);
+   }
+   else{
+        console.log("updated");
+   }
+}
+
+const old={name:/^S/};
+const new1={age:27};
+let doc=nm.updateMany(old,new1,(err)=>{
+  if(err){
+    console.log(err);
+   }
+   else{
+        console.log("updated");
+   }
+}
+nm.findOne({age:27},function(err,res)
+{
+if(err)throw err;
+console.log("1 document find:",res);
+CSE_C.close();
+});
+
+
