@@ -89,6 +89,48 @@ form{
  margin: 20px;
 }
 
+.js
+
+var express = require("express")
+var bodyParser = require("body-parser")
+var mongoose = require("mongoose")
+
+const app = express()
+
+app.use(bodyParser.json())
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
+
+mongoose.connect("mongodb://127.0.0.1:27017/users",(err)=>{
+if(err)
+	console.log("DB not connected");
+else
+	console.log("DB Connected");
+});
+const ns=new mongoose.Schema({
+id:String,
+name:String});
+const nm=new mongoose.model("records",ns);
+var db = mongoose.connection;
+
+db.on('error',()=>console.log("Error in Connecting to Database"));
+db.once('open',()=>console.log("Connected to Database"))
+
+app.post("/insert",(req,res)=>{
+    var id = req.body.empID;
+    var name = req.body.name;
+    var data =new nm( {
+        "id": id,
+        "name" : name,
+    });
+data.save();
+
+        console.log("Record Inserted Successfully");
+
+}).listen(3000);
+
 
 
 
