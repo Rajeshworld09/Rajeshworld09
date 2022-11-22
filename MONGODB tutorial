@@ -62,4 +62,24 @@ console.log("1 document find:",res);
 CSE_C.close();
 });
 
+nm.drop().then(function(){
+console.log("Table Dropped")
+}).catch(function(error){
+console.log(error)
+});
+
+
+
+nm.find({},function(err,data){
+if(err)
+{
+console.log(err);
+}
+else
+{
+console.log("First Function Call:",data);
+}
+});
+
+
 
