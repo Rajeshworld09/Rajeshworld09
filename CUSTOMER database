@@ -1,0 +1,145 @@
+html file:
+   <!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meta charset = "UTF-8">
+  <link rel = "stylesheet" href="style.css">
+  <title> My Form </title>
+</head>
+<body>
+  <header>
+    <h1>Customer Database</h1>
+  </header>
+  <form action="/add" method="POST">
+    <fieldset>
+      <h3>Add new customer</h3>
+      <label>Customer ID</label>
+      <input type ="text" id = 'empID' name="id" required>
+      <br><br>
+      <label>Name</label>
+      <input type="text" id = "name" name="name" required>
+      <br><br>
+      <button type ="reset">Reset</button>
+      <button type ="submit">Submit</button>
+    </fieldset>
+  </form>
+<form action="/view" method="POST">
+  <fieldset>
+    <h3>View an Customer</h3>
+    <label>Customer ID</label>
+    <input type="text" id="empID" name="id" required>
+    <br><br>
+    <button type ="reset">Reset</button>
+    <button type ="submit">Submit</button>
+    <br><br><br>
+  </fieldset>
+ </form>
+<form action="/update" method="POST">
+  <fieldset>
+    <h3>Update an Customer</h3>
+    <label>Customer ID</label>
+    <input type ="text" id = 'empID' name="id" required>
+    <br><br>
+    <label>New Name</label>
+    <input type="text" id = "name" name="name" required>
+    <br><br>
+    <button type ="reset">Reset</button>
+    <button type ="submit">Submit</button>
+  </fieldset>
+ </form>
+<form action="/delete" method="POST">
+  <fieldset>
+    <h3>Delete an Customer</h3>
+    <label>Customer ID</label>
+    <input type ="text" id = 'empID' name="id" required>
+    <br><br>
+    <button type ="reset">Reset</button>
+    <button type ="submit">Submit</button>
+    <br><br><br>
+  </fieldset>
+ </form>
+
+  </body>
+</html>
+
+
+css file:
+   body{
+ background-color: #ffffff;
+}
+header{
+ text-align: center;
+ height: 100px;
+ padding-top: 1px;
+ background-color: #000000;
+ color: #FFFFFF;
+ font-size: x-large;
+}
+h3{
+ margin-top: 2px;
+ text-align: center;
+ background-color: #000000;
+ color: #FFFFFF;
+}
+form{
+ width: 45%;
+ display: inline-block;
+ margin: 20px;
+}
+
+js file:
+  var express = require("express")
+var bodyParser = require("body-parser")
+var mongoose = require("mongoose")
+
+const app = express()
+
+app.use(bodyParser.json())
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
+
+mongoose.connect("mongodb://127.0.0.1:27017/users",(err)=>{
+if(err)
+	console.log("DB not connected");
+else
+	console.log("DB Connected");
+});
+const ns=new mongoose.Schema({
+id:String,
+name:String});
+const nm=new mongoose.model("records",ns);
+var db = mongoose.connection;
+
+db.on('error',()=>console.log("Error in Connecting to Database"));
+db.once('open',()=>console.log("Connected to Database"))
+
+
+
+app.post("/add",(req,res)=>{
+    var id = req.body.empID;
+    var name = req.body.name;
+    var data =new nm( {
+        "id": id,
+        "name" : name,
+
+
+    });
+data.save();
+
+        console.log("Record Inserted Successfully");
+return res.redirect('signup_success.html')
+})
+
+
+
+app.get("/",(req,res)=>{
+    res.set({
+        "Allow-access-Allow-Origin": '*'
+    })
+    return res.redirect('cus.html');
+}).listen(3030);
+
+console.log("listening on port 3030");
+    
