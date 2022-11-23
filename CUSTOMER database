@@ -87,7 +87,7 @@ form{
 }
 
 js file:
-    var express = require("express")
+     var express = require("express")
 var bodyParser = require("body-parser")
 var mongoose = require("mongoose")
 
@@ -168,10 +168,10 @@ app.post("/update",(req,res)=>{
 	console.log("Record updated successfully");
 	
 })
-//yet not completed
+
 app.post("/view",(req,res)=>{
     var id=req.body.id;
-    nm.findOne({"c_id":id},function(err,res){
+    nm.find({"c_id":id},function(err,res){
     	if(err)
 	{
 		console.log(err);
@@ -179,15 +179,14 @@ app.post("/view",(req,res)=>{
 	else
 	{
 		//res.send('<p>Customer_ID: ' + req.body['id']+'</p><p>Name: '+req.query[id]+'</p>');
-		console.log("u can view");
-	}		
+		console.log(res);
+	}	
 });
 
-	res.send("record updated");
-	console.log("Record updated successfully");
+	res.send("view your details in the console");
+	console.log("VIEW DETAILS");
 	
 })
-//till here
 
 app.get("/",(req,res)=>{
     res.set({
@@ -197,4 +196,3 @@ app.get("/",(req,res)=>{
 }).listen(3030);
 
 console.log("listening on port 3030");
-    
