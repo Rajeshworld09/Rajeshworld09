@@ -14,7 +14,7 @@ html file:
     <fieldset>
       <h3>Add new customer</h3>
       <label>Customer ID</label>
-      <input type ="text" id = 'empID' name="id" required>
+      <input type ="text" id = 'id' name="id" required>
       <br><br>
       <label>Name</label>
       <input type="text" id = "name" name="name" required>
@@ -27,7 +27,7 @@ html file:
   <fieldset>
     <h3>View an Customer</h3>
     <label>Customer ID</label>
-    <input type="text" id="empID" name="id" required>
+    <input type="text" id="id" name="id" required>
     <br><br>
     <button type ="reset">Reset</button>
     <button type ="submit">Submit</button>
@@ -38,7 +38,7 @@ html file:
   <fieldset>
     <h3>Update an Customer</h3>
     <label>Customer ID</label>
-    <input type ="text" id = 'empID' name="id" required>
+    <input type ="text" id = 'id' name="id" required>
     <br><br>
     <label>New Name</label>
     <input type="text" id = "name" name="name" required>
@@ -51,7 +51,7 @@ html file:
   <fieldset>
     <h3>Delete an Customer</h3>
     <label>Customer ID</label>
-    <input type ="text" id = 'empID' name="id" required>
+    <input type ="text" id = 'id' name="id" required>
     <br><br>
     <button type ="reset">Reset</button>
     <button type ="submit">Submit</button>
@@ -61,7 +61,6 @@ html file:
 
   </body>
 </html>
-
 
 css file:
    body{
@@ -88,7 +87,7 @@ form{
 }
 
 js file:
-  var express = require("express")
+    var express = require("express")
 var bodyParser = require("body-parser")
 var mongoose = require("mongoose")
 
@@ -107,7 +106,7 @@ else
 	console.log("DB Connected");
 });
 const ns=new mongoose.Schema({
-id:String,
+c_id:String,
 name:String});
 const nm=new mongoose.model("records",ns);
 var db = mongoose.connection;
@@ -118,11 +117,11 @@ db.once('open',()=>console.log("Connected to Database"))
 
 
 app.post("/add",(req,res)=>{
-    var id = req.body.empID;
+    var id = req.body.id;
     var name = req.body.name;
     var data =new nm( {
-        "id": id,
-        "name" : name,
+        "c_id": id,
+        "name" : name
 
 
     });
@@ -132,13 +131,69 @@ data.save();
 return res.redirect('signup_success.html')
 })
 
+app.post("/delete",(req,res)=>{
+    var id = req.body.id;
+    nm.deleteOne({"c_id":id},function(err,data){
+	if(err)
+	{
+		console.log(err);
+	}
+	else
+	{
+		console.log("Deleted record");
+	}
+	
+});
 
+	res.send("record deleted");
+	console.log("Record Deleted Successfully");
+	
+})
+app.post("/update",(req,res)=>{
+    
+    	const old=req.body.id;
+	const new2=req.body.name;
+	const new1={$set:{"name":new2}};
+
+	nm.findOneAndUpdate({"c_id":old},new1,function(err){
+  	if(err){
+    		console.log(err);
+   	}
+   	else{
+        console.log("updated");
+  	 }
+});
+
+	res.send("record updated");
+	console.log("Record updated successfully");
+	
+})
+//yet not completed
+app.post("/view",(req,res)=>{
+    var id=req.body.id;
+    nm.findOne({"c_id":id},function(err,res){
+    	if(err)
+	{
+		console.log(err);
+	}
+	else
+	{
+		//res.send('<p>Customer_ID: ' + req.body['id']+'</p><p>Name: '+req.query[id]+'</p>');
+		console.log("u can view");
+	}		
+});
+
+	res.send("record updated");
+	console.log("Record updated successfully");
+	
+})
+//till here
 
 app.get("/",(req,res)=>{
     res.set({
         "Allow-access-Allow-Origin": '*'
     })
-    return res.redirect('cus.html');
+    return res.redirect('customer.html');
 }).listen(3030);
 
 console.log("listening on port 3030");
